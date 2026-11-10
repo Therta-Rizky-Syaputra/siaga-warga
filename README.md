@@ -1,6 +1,13 @@
 # Siaga Warga
 
-Platform pengaduan fasilitas umum warga RT/RW. Tugas Kelompok 6 — Pertemuan 3, mata kuliah
+Platform pengaduan fasilitas umum warga RT/RW.
+
+Repositori ini memuat dua bagian yang saling melengkapi:
+
+| Bagian | Isi | Teknologi |
+|---|---|---|
+| akar repositori | aplikasi web Siaga Warga | Laravel 13, Vite, Tailwind, SQLite/MySQL |
+| `siaga_warga_app/` | aplikasi Android untuk ponsel warga | Flutter + WebView (pembungkus) | Tugas Kelompok 6 — Pertemuan 3, mata kuliah
 Komputer dan Masyarakat, Program Studi Informatika, Fakultas Ilmu Komputer, Universitas
 Singaperbangsa Karawang.
 

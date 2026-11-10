@@ -1,0 +1,24 @@
+name: siaga_warga_app
+description: "Siaga Warga — pengaduan fasilitas umum warga RT/RW."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  # pembungkus aplikasi web Siaga Warga; resmi dari tim Flutter
+  webview_flutter: ^4.10.0
+  # menyimpan alamat server yang diisi warga
+  shared_preferences: ^2.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
