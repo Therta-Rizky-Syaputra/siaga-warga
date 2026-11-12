@@ -4,10 +4,23 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#1d4ed8">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="apple-touch-icon" href="/ikon/ikon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="SiagaWarga">
     <title>{{ $title }} — Siaga Warga</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
+@auth
+    {{-- papan pantau perubahan; tombol pasang muncul otomatis lewat JS --}}
+    <div data-pantau
+         data-denyut="{{ route('perubahan') }}"
+         @if (auth()->user()->isPengelola()) data-aliran="{{ route('perubahan.aliran') }}" @endif
+         hidden></div>
+@endauth
+
 <header class="topbar">
     <div class="topbar-inner">
         <a href="{{ route('dashboard') }}" class="brand">Siaga<span>Warga</span></a>
@@ -33,6 +46,7 @@
                 <form method="POST" action="{{ route('keluar') }}" style="margin-top:4px">
                     @csrf
                     <button class="tombol putih kecil" type="submit">Keluar</button>
+                    <button class="tombol kecil" type="button" id="pasang-ke-hp" hidden>Pasang di HP</button>
                 </form>
             </div>
         @endauth
@@ -46,6 +60,13 @@
     @if (session('gagal'))
         <div class="pesan gagal">{{ session('gagal') }}</div>
     @endif
+
+    @auth
+        <div id="tawaran-muat" class="pesan informasi" hidden>
+            Ada laporan baru masuk.
+            <button class="tombol kecil" type="button" onclick="location.reload()">Muat ulang</button>
+        </div>
+    @endauth
 
     {{ $slot }}
 </main>

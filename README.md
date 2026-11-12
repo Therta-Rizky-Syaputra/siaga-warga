@@ -29,11 +29,29 @@ Buka `http://127.0.0.1:8000`.
 
 ## Akun demo (kata sandi: `password`)
 
-| Peran | Email |
+Masuk memakai **nomor HP**. Format bebas: `0812…`, `62812…`, atau `+62 812…`.
+
+| Peran | Nomor HP |
 |---|---|
-| Admin Sistem | admin@siagawarga.test |
-| Pengurus RT/RW | pengurus@siagawarga.test |
-| Warga | warga@siagawarga.test |
+| Admin Sistem | 0812-0000-0001 |
+| Pengurus RT/RW | 0812-0000-0002 |
+| Warga | 0812-0000-0003 |
+
+Warga mendaftar sendiri dengan nomor HP + kata sandi (email opsional). Foto bukti
+disimpan **privat** — hanya bisa dibuka pelapor dan pengurus RT/RW.
+
+## Real-time
+
+- **Pengurus** (`/dashboard`) memakai Server-Sent Events: laporan warga muncul tanpa refresh.
+- **Warga** memakai denyut ringan tiap 10 detik dan berhenti saat layar tidak dilihat.
+- Aplikasi bisa dipasang ke layar utama HP (PWA); ada halaman "tidak ada sinyal" saat jaringan putus.
+
+> Catatan: `php artisan serve` hanya satu proses, sehingga satu koneksi SSE menahan permintaan lain.
+> Untuk menguji real-time lokal, pakai Apache/Laragon (seperti VPS).
+
+## Pemasangan ke VPS
+
+Lihat `deploy/DEPLOY.md` (nginx + HTTPS + PHP-FPM + antrean + cadangan harian).
 
 ## Alur sistem
 
@@ -66,8 +84,15 @@ users ──1:N── laporans ──N:1── kategori_masalahs
 ## Pengujian
 
 ```bash
-php artisan test
+php artisan test     # 19 uji: autentikasi nomor HP, alur laporan, real-time, izin foto, PWA
 ```
+
+## Dokumen perancangan
+
+- `docs/Perancangan-Sistem-Siaga-Warga.docx` (dan `.pdf`) — dokumen perancangan: use case diagram,
+  flowchart per aktor, ERD & skema tabel, wireframe UI/UX, spesifikasi teknis, rencana UAT.
+- `docs/diagram/` — gambar diagram (PNG) hasil skrip `docs/gambar_diagram.py`.
+- `docs/buat_dokumen.py` — skrip penyusun dokumen dari gambar tersebut.
 
 ## Tangkapan layar
 

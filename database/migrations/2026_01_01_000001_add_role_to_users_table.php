@@ -12,7 +12,7 @@ return new class extends Migration
             // warga | pengurus | admin
             $table->string('role')->default('warga')->after('password');
             $table->string('rt_rw')->nullable()->after('role');
-            $table->string('telepon')->nullable()->after('rt_rw');
+            $table->string('telepon', 20)->nullable()->unique()->after('rt_rw');
         });
     }
 

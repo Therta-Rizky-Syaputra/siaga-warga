@@ -48,7 +48,8 @@ h2 { font-size: 18px; margin: 24px 0 8px; }
 
 /* ---------- Kartu & tombol ---------- */
 .kartu { background: #fff; border: 1px solid var(--garis); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
-.kartu-kepala { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.kartu-kepala { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.kartu-kepala > .tombol, .kartu-kepala > .baris-tombol { margin-bottom: 4px; }
 .petak { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 8px; }
 .petak .angka { font-size: 28px; font-weight: 700; line-height: 1.1; }
 .petak .label { font-size: 13px; color: var(--abu); }
@@ -102,6 +103,11 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #93c5fd; outline-
 .pesan { padding: 12px 14px; border-radius: 10px; margin-bottom: 14px; font-size: 15px; border: 1px solid; }
 .pesan.sukses { background: #f0fdf4; border-color: #bbf7d0; color: #14532d; }
 .pesan.gagal { background: #fef2f2; border-color: #fecaca; color: #7f1d1d; }
+.pesan.informasi { background: #eff6ff; border-color: #bfdbfe; color: #1e3a8a; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pesan.informasi[hidden] { display: none; }
+
+@keyframes denyut { 0% { box-shadow: 0 0 0 0 rgba(29,78,216,.35); } 100% { box-shadow: 0 0 0 14px rgba(29,78,216,0); } }
+.kartu.berdenyut { animation: denyut .9s ease-out 1; }
 
 /* ---------- Linimasa status ---------- */
 .linimasa { display: flex; gap: 0; margin: 18px 0 4px; flex-wrap: wrap; }
@@ -127,4 +133,22 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #93c5fd; outline-
     .grid-2 { grid-template-columns: 1fr; }
     h1 { font-size: 21px; }
     .who { display: none; }
+
+    /* HP: baris 1 = merek + akun, baris 2 = menu penuh lebar.
+       Semua menu terlihat; tidak ada yang tersembunyi di balik geseran. */
+    .topbar-inner { flex-wrap: wrap; row-gap: 4px; gap: 8px; padding: 8px 12px; }
+    .brand { font-size: 17px; order: 1; }
+    .nav { order: 3; flex: 0 0 100%; flex-wrap: wrap; overflow: visible; gap: 2px; }
+    .nav a { white-space: nowrap; flex: 0 0 auto; padding: 8px 10px; font-size: 14px; }
+    .who { order: 2; margin-left: auto; display: flex; align-items: center; gap: 6px; text-align: right; }
+    .who br, .who strong { display: none; }          /* nama + tombol saja di layar sempit */
+    .who form { margin-top: 0 !important; }
+
+    /* tombol utama warga selebar layar: mudah ditekan jempol */
+    .kartu-kepala > .tombol { width: 100%; }
+
+    /* tabel panjang tidak memaksa halaman melebar */
+    .tabel-bungkus { -webkit-overflow-scrolling: touch; }
+    table { font-size: 14px; }
+    th, td { padding: 8px 6px; }
 }

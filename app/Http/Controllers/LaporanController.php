@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SimpanLaporanRequest;
 use App\Models\KategoriMasalah;
 use App\Models\Laporan;
+use App\Support\Kanal;
 use App\Support\StatusLaporan;
 use Illuminate\Http\Request;
 
@@ -33,10 +34,13 @@ class LaporanController extends Controller
     public function simpan(SimpanLaporanRequest $request)
     {
         $data = $request->validated();
-        $data['foto'] = $request->file('foto')?->store('laporan', 'public');
+        // disk "local" = privat: foto rumah warga tidak boleh punya URL publik
+        $data['foto'] = $request->file('foto')?->store('laporan', 'local');
         $data['status'] = StatusLaporan::DIKIRIM;
 
         $laporan = $request->user()->laporans()->create($data);
+
+        app(Kanal::class)->tandaiBerubah();
 
         return redirect()->route('laporan.show', $laporan)
             ->with('sukses', 'Laporan '.$laporan->nomorTiket().' terkirim. Pantau statusnya di sini.');

@@ -40,7 +40,7 @@
 
         <div class="bidang">
             <label for="lokasi">Lokasi acuan *</label>
-            <input id="lokasi" type="text" name="lokasi" value="{{ old('lokasi') }}" placeholder="Contoh: Depan Blok C No. 12 / Pertigaan Gang Melati" required>
+            <input id="lokasi" type="text" name="lokasi" value="{{ old('lokasi') }}" placeholder="Contoh: Depan Blok C No. 12" required>
             <p class="bantuan">Tulis patokan yang mudah dikenali petugas, misalnya nomor rumah, blok, atau gang terdekat.</p>
             @error('lokasi') <p class="salah">{{ $message }}</p> @enderror
         </div>

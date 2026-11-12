@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengumuman;
+use App\Support\Kanal;
 use Illuminate\Http\Request;
 
 class PengumumanController extends Controller
@@ -23,6 +24,8 @@ class PengumumanController extends Controller
     {
         $pengumuman = $request->user()->pengumumans()->create($this->data($request));
 
+        app(Kanal::class)->tandaiBerubah();
+
         return redirect()->route('pengumuman.show', $pengumuman)->with('sukses', 'Pengumuman dipublikasikan.');
     }
 
@@ -40,12 +43,16 @@ class PengumumanController extends Controller
     {
         $pengumuman->update($this->data($request));
 
+        app(Kanal::class)->tandaiBerubah();
+
         return redirect()->route('pengumuman.show', $pengumuman)->with('sukses', 'Pengumuman diperbarui.');
     }
 
     public function hapus(Pengumuman $pengumuman)
     {
         $pengumuman->delete();
+
+        app(Kanal::class)->tandaiBerubah();
 
         return redirect()->route('pengumuman.index')->with('sukses', 'Pengumuman dihapus.');
     }

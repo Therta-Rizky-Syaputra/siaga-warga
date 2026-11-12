@@ -11,12 +11,14 @@
     </div>
 
     <div class="petak">
-        <div class="kartu"><div class="angka">{{ $total }}</div><div class="label">Total laporan</div></div>
-        <div class="kartu"><div class="angka" style="color:var(--merah)">{{ $prioritasTinggi }}</div><div class="label">Prioritas tinggi belum selesai</div></div>
-        @foreach (['dikirim' => 'Menunggu verifikasi', 'diverifikasi' => 'Diverifikasi', 'diproses' => 'Diproses', 'selesai' => 'Selesai', 'ditolak' => 'Ditolak'] as $status => $label)
-            <div class="kartu"><div class="angka">{{ $jumlahPerStatus[$status] }}</div><div class="label">{{ $label }}</div></div>
+        <div class="kartu" data-kartu><div class="angka" data-hitung="total">{{ $total }}</div><div class="label">Total laporan</div></div>
+        <div class="kartu" data-kartu><div class="angka" style="color:var(--merah)" data-hitung="prioritas_tinggi">{{ $prioritasTinggi }}</div><div class="label">Prioritas tinggi belum selesai</div></div>
+        @foreach (['dikirim' => 'Dikirim (menunggu verifikasi)', 'diverifikasi' => 'Diverifikasi', 'diproses' => 'Diproses', 'selesai' => 'Selesai', 'ditolak' => 'Ditolak'] as $status => $label)
+            <div class="kartu" data-kartu><div class="angka" data-hitung="{{ $status === 'dikirim' ? 'dikirim' : $status }}">{{ $jumlahPerStatus[$status] }}</div><div class="label">{{ $label }}</div></div>
         @endforeach
+        <div class="kartu"><div class="angka" data-hitung="pengumuman">{{ $jumlahPengumuman }}</div><div class="label">Pengumuman aktif</div></div>
     </div>
+    <p class="bantuan">Data diperbarui otomatis. Terakhir tersinkron pukul <span id="diperbarui-pada">—</span>.</p>
 
     <h2>Laporan terbaru</h2>
     <div class="tabel-bungkus">

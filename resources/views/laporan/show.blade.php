@@ -39,10 +39,11 @@
         <table>
             <tr><th style="width:180px">Lokasi acuan</th><td>{{ $laporan->lokasi }}</td></tr>
             <tr><th>Waktu penanganan pertama</th><td>{{ $laporan->ditangani_pada?->format('d M Y H:i') ?? 'Belum ditangani' }}</td></tr>
+            <tr><th>Nomor HP pelapor</th><td>{{ \App\Support\Telepon::tampilkan($laporan->pelapor->telepon ?? '') ?: '—' }}</td></tr>
             <tr><th>Penanggung jawab</th><td>{{ $laporan->penanggungJawab->name ?? 'Belum ditetapkan' }}</td></tr>
         </table>
         @if ($laporan->foto)
-            <p><img class="foto-laporan" src="{{ Storage::url($laporan->foto) }}" alt="Foto bukti laporan {{ $laporan->nomorTiket() }}"></p>
+            <p><img class="foto-laporan" src="{{ route('laporan.foto', $laporan) }}" alt="Foto bukti laporan {{ $laporan->nomorTiket() }}"></p>
         @else
             <p class="kosong">Warga tidak melampirkan foto.</p>
         @endif

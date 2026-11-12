@@ -13,9 +13,10 @@
                     @error('name') <p class="salah">{{ $message }}</p> @enderror
                 </div>
                 <div class="bidang">
-                    <label for="baru-email">Email *</label>
-                    <input id="baru-email" type="email" name="email" value="{{ old('email') }}" required>
-                    @error('email') <p class="salah">{{ $message }}</p> @enderror
+                    <label for="baru-telepon">Nomor HP *</label>
+                    <input id="baru-telepon" type="tel" inputmode="tel" name="telepon" value="{{ old('telepon') }}"
+                           placeholder="0812-3456-7890" required>
+                    @error('telepon') <p class="salah">{{ $message }}</p> @enderror
                 </div>
             </div>
             <div class="grid-2">
@@ -39,8 +40,8 @@
                     <input id="baru-rt" type="text" name="rt_rw" value="{{ old('rt_rw') }}">
                 </div>
                 <div class="bidang">
-                    <label for="baru-telp">Telepon</label>
-                    <input id="baru-telp" type="text" name="telepon" value="{{ old('telepon') }}">
+                    <label for="baru-email">Email (opsional)</label>
+                    <input id="baru-email" type="email" name="email" value="{{ old('email') }}">
                 </div>
             </div>
             <button class="tombol" type="submit">Simpan Pengguna</button>
@@ -60,7 +61,7 @@
     <div class="tabel-bungkus">
         <table>
             <thead>
-                <tr><th>Nama</th><th>Email</th><th>Peran</th><th>RT/RW</th><th>Laporan</th><th>Aksi</th></tr>
+                <tr><th>Nama</th><th>Nomor HP</th><th>Peran</th><th>RT/RW</th><th>Laporan</th><th>Aksi</th></tr>
             </thead>
             <tbody>
                 @foreach ($penggunas as $pengguna)
@@ -71,7 +72,7 @@
                                 @method('PUT')
                                 <input type="text" name="name" value="{{ $pengguna->name }}" required>
                         </td>
-                        <td><input type="email" name="email" value="{{ $pengguna->email }}" required></td>
+                        <td><input type="tel" inputmode="tel" name="telepon" value="{{ $pengguna->telepon }}" required></td>
                         <td>
                             <select name="role" required>
                                 @foreach (\App\Support\Peran::semua() as $peran)

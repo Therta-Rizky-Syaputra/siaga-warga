@@ -1,0 +1,23 @@
+# Simpan sebagai /etc/systemd/system/siaga-warga.service
+# Lalu: sudo systemctl daemon-reload && sudo systemctl enable --now siaga-warga
+[Unit]
+Description=Siaga Warga (Laravel queue worker)
+After=network.target
+
+[Service]
+# ponytail: user & path disesuaikan saat deploy; jangan jalankan sebagai root
+User=www-data
+Group=www-data
+Restart=always
+RestartSec=5
+WorkingDirectory=/var/www/siaga-warga
+
+# pekerja antrean (notifikasi keluhan tidak menahan balasan ke warga)
+ExecStart=/usr/bin/php /var/www/siaga-warga/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+
+# hanya satu proses; naikkan bila trafik bertambah
+StandardOutput=append:/var/log/siaga-warga-queue.log
+StandardError=append:/var/log/siaga-warga-queue.log
+
+[Install]
+WantedBy=multi-user.target

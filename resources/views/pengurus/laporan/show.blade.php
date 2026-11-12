@@ -22,11 +22,12 @@
             <p>{{ $laporan->deskripsi }}</p>
             <table>
                 <tr><th style="width:160px">Pelapor</th><td>{{ $laporan->pelapor->name }} ({{ $laporan->pelapor->rt_rw ?? '-' }})</td></tr>
+                <tr><th>Nomor HP</th><td>{{ \App\Support\Telepon::tampilkan($laporan->pelapor->telepon ?? '') ?: '—' }}</td></tr>
                 <tr><th>Lokasi acuan</th><td>{{ $laporan->lokasi }}</td></tr>
                 <tr><th>Ditangani pertama</th><td>{{ $laporan->ditangani_pada?->format('d M Y H:i') ?? 'Belum' }}</td></tr>
             </table>
             @if ($laporan->foto)
-                <p><img class="foto-laporan" src="{{ Storage::url($laporan->foto) }}" alt="Foto bukti laporan"></p>
+                <p><img class="foto-laporan" src="{{ route('laporan.foto', $laporan) }}" alt="Foto bukti laporan"></p>
             @endif
         </div>
 

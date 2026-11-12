@@ -25,3 +25,13 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# kunci penandatanganan & berkas Android — tidak pernah masuk repositori
+/deploy/android
+*.jks
+*.keystore
+key.properties
+
+# basis data lokal
+/database/*.sqlite
+/database/*.sqlite-journal

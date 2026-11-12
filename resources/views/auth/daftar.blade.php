@@ -11,9 +11,11 @@
                 @error('name') <p class="salah">{{ $message }}</p> @enderror
             </div>
             <div class="bidang">
-                <label for="email">Email</label>
-                <input id="email" type="email" name="email" value="{{ old('email') }}" required>
-                @error('email') <p class="salah">{{ $message }}</p> @enderror
+                <label for="telepon">Nomor HP *</label>
+                <input id="telepon" type="tel" inputmode="tel" name="telepon" value="{{ old('telepon') }}"
+                       placeholder="0812-3456-7890" autocomplete="username" required>
+                <p class="bantuan">Nomor ini dipakai untuk masuk. Boleh ditulis 0812…, 62812…, atau +62 812…</p>
+                @error('telepon') <p class="salah">{{ $message }}</p> @enderror
             </div>
             <div class="grid-2">
                 <div class="bidang">
@@ -22,8 +24,9 @@
                     @error('rt_rw') <p class="salah">{{ $message }}</p> @enderror
                 </div>
                 <div class="bidang">
-                    <label for="telepon">Nomor telepon (opsional)</label>
-                    <input id="telepon" type="text" name="telepon" value="{{ old('telepon') }}">
+                    <label for="email">Email (opsional)</label>
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="boleh dikosongkan">
+                    @error('email') <p class="salah">{{ $message }}</p> @enderror
                 </div>
             </div>
             <div class="grid-2">

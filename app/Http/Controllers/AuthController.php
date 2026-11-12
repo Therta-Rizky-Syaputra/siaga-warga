@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Support\Peran;
+use App\Support\Telepon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
@@ -18,17 +20,32 @@ class AuthController extends Controller
 
     public function masuk(Request $request)
     {
-        $kredensial = $request->validate([
-            'email' => ['required', 'email'],
+        $data = $request->validate([
+            'telepon' => ['required', 'string', 'max:20'],
             'password' => ['required', 'string'],
         ]);
 
-        if (! Auth::attempt($kredensial, $request->boolean('ingat_saya'))) {
+        $kunci = 'masuk:'.Telepon::normalisasi($data['telepon']).'|'.$request->ip();
+
+        if (RateLimiter::tooManyAttempts($kunci, 5)) {
             throw ValidationException::withMessages([
-                'email' => 'Email atau kata sandi tidak cocok.',
+                'telepon' => 'Terlalu banyak percobaan. Coba lagi dalam '
+                    .RateLimiter::availableIn($kunci).' detik.',
             ]);
         }
 
+        if (! Auth::attempt([
+            'telepon' => Telepon::normalisasi($data['telepon']),
+            'password' => $data['password'],
+        ], $request->boolean('ingat_saya'))) {
+            RateLimiter::hit($kunci, 60);
+
+            throw ValidationException::withMessages([
+                'telepon' => 'Nomor HP atau kata sandi tidak cocok.',
+            ]);
+        }
+
+        RateLimiter::clear($kunci);
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard'));
@@ -43,15 +60,21 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:80'],
-            'email' => ['required', 'email', 'max:120', 'unique:users,email'],
+            'telepon' => ['required', 'string', 'max:20'],
             'rt_rw' => ['required', 'string', 'max:40'],
-            'telepon' => ['nullable', 'string', 'max:20'],
-            // ponytail: password rule bawaan Laravel, tidak ada konfigurasi tambahan
+            'email' => ['nullable', 'email', 'max:120', 'unique:users,email'],
             'password' => ['required', 'confirmed', Password::defaults()],
-        ]);
+        ], [], ['telepon' => 'nomor HP']);
+
+        $data['telepon'] = Telepon::normalisasi($data['telepon']);
+
+        if (User::where('telepon', $data['telepon'])->exists()) {
+            throw ValidationException::withMessages([
+                'telepon' => 'Nomor HP ini sudah terdaftar. Silakan masuk, atau hubungi pengurus RT/RW.',
+            ]);
+        }
 
         $data['role'] = Peran::WARGA;
-
         $user = User::create($data);
 
         Auth::login($user);

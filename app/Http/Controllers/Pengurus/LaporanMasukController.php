@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pengurus;
 use App\Http\Controllers\Controller;
 use App\Models\KategoriMasalah;
 use App\Models\Laporan;
+use App\Support\Kanal;
 use App\Support\StatusLaporan;
 use Illuminate\Http\Request;
 
@@ -63,6 +64,8 @@ class LaporanMasukController extends Controller
                 'status_baru' => $sebelumnya === $data['status'] ? null : $data['status'],
             ]);
         }
+
+        app(Kanal::class)->tandaiBerubah();
 
         return back()->with('sukses', 'Laporan '.$laporan->nomorTiket().' diperbarui.');
     }

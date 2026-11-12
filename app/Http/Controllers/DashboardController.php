@@ -21,6 +21,7 @@ class DashboardController extends Controller
                 'prioritasTinggi' => Laporan::prioritasTinggi()->count(),
                 'terbaru' => Laporan::with(['kategori', 'pelapor'])->latest()->take(5)->get(),
                 'pengumuman' => Pengumuman::aktif()->latest()->take(3)->get(),
+                'jumlahPengumuman' => Pengumuman::aktif()->count(),
             ]);
         }
 

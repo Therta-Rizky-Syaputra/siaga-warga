@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FotoLaporanController;
 use App\Http\Controllers\KelolaPenggunaController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\Pengurus\LaporanMasukController;
+use App\Http\Controllers\PerubahanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route(auth()->check() ? 'dashboard' : 'masuk'));
@@ -29,9 +31,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/laporan', [LaporanController::class, 'simpan'])->name('laporan.simpan');
     Route::get('/laporan/{laporan}', [LaporanController::class, 'show'])->name('laporan.show');
     Route::post('/laporan/{laporan}/tanggapan', [LaporanController::class, 'tanggapi'])->name('laporan.tanggapi');
+    Route::get('/laporan/{laporan}/foto', FotoLaporanController::class)->name('laporan.foto');
 
     // Pengumuman: semua boleh baca
     Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
+
+    // Real-time: denyut ringan untuk warga, aliran SSE untuk pengurus
+    Route::get('/perubahan', PerubahanController::class)->name('perubahan');
+    Route::get('/perubahan/aliran', [PerubahanController::class, 'aliran'])->name('perubahan.aliran');
 
     Route::middleware('peran:pengurus,admin')->group(function () {
         // Pengurus RT/RW: verifikasi, respons, prioritas, pengumuman

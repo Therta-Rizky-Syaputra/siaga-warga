@@ -16,14 +16,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory()->create([
-            'name' => 'Admin Sistem', 'email' => 'admin@siagawarga.test', 'role' => Peran::ADMIN,
+            'name' => 'Admin Sistem', 'telepon' => '6281200000001', 'role' => Peran::ADMIN,
         ]);
         $pengurus = User::factory()->create([
-            'name' => 'Budi Santoso (Ketua RT 04)', 'email' => 'pengurus@siagawarga.test',
+            'name' => 'Budi Santoso (Ketua RT 04)', 'telepon' => '6281200000002',
             'role' => Peran::PENGURUS, 'rt_rw' => 'RT 04 / RW 02',
         ]);
         $warga = User::factory()->create([
-            'name' => 'Therta Rizky Syaputra', 'email' => 'warga@siagawarga.test',
+            'name' => 'Therta Rizky Syaputra', 'telepon' => '6281200000003',
             'role' => Peran::WARGA, 'rt_rw' => 'RT 04 / RW 02',
         ]);
 

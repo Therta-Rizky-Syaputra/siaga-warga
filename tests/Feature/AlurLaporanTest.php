@@ -86,10 +86,10 @@ class AlurLaporanTest extends TestCase
         $admin = User::factory()->create(['role' => Peran::ADMIN]);
 
         $this->actingAs($admin)->post(route('admin.pengguna.simpan'), [
-            'name' => 'Petugas Baru', 'email' => 'petugas@siagawarga.test',
+            'name' => 'Petugas Baru', 'telepon' => '0812-9999-8888',
             'role' => Peran::PENGURUS, 'password' => 'rahasia12345',
         ])->assertRedirect();
-        $this->assertDatabaseHas('users', ['email' => 'petugas@siagawarga.test', 'role' => Peran::PENGURUS]);
+        $this->assertDatabaseHas('users', ['telepon' => '6281299998888', 'role' => Peran::PENGURUS]);
 
         $this->actingAs($admin)->delete(route('admin.pengguna.hapus', $admin))->assertRedirect();
         $this->assertDatabaseHas('users', ['id' => $admin->id]);

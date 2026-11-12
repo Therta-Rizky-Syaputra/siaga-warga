@@ -8,10 +8,23 @@
     </div>
 
     <div class="petak">
-        <div class="kartu"><div class="angka">{{ $total }}</div><div class="label">Total laporan saya</div></div>
-        <div class="kartu"><div class="angka">{{ $belumSelesai }}</div><div class="label">Sedang ditangani</div></div>
-        <div class="kartu"><div class="angka">{{ $selesai }}</div><div class="label">Selesai</div></div>
+        <div class="kartu" data-kartu>
+            <div class="angka" data-hitung="saya_total">{{ $total }}</div>
+            <div class="label">Total laporan saya</div>
+        </div>
+        <div class="kartu" data-kartu>
+            <div class="angka" data-hitung="saya_diproses">{{ $belumSelesai }}</div>
+            <div class="label">Sedang ditangani</div>
+        </div>
+        <div class="kartu" data-kartu>
+            <div class="angka" data-hitung="saya_selesai">{{ $selesai }}</div>
+            <div class="label">Selesai</div>
+        </div>
     </div>
+    <p class="bantuan">
+        Status terbaru muncul sendiri tanpa perlu refresh.
+        Terakhir tersinkron pukul <span id="diperbarui-pada">—</span>.
+    </p>
 
     <h2>Laporan terbaru</h2>
     <div class="kartu">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Support\Peran;
+use App\Support\Telepon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -25,12 +26,18 @@ class KelolaPenggunaController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:80'],
-            'email' => ['required', 'email', 'max:120', 'unique:users,email'],
+            'telepon' => ['required', 'string', 'max:20'],
+            'email' => ['nullable', 'email', 'max:120', 'unique:users,email'],
             'role' => ['required', Rule::in(Peran::semua())],
             'rt_rw' => ['nullable', 'string', 'max:40'],
-            'telepon' => ['nullable', 'string', 'max:20'],
             'password' => ['required', Password::defaults()],
-        ]);
+        ], [], ['telepon' => 'nomor HP']);
+
+        $data['telepon'] = Telepon::normalisasi($data['telepon']);
+
+        if (User::where('telepon', $data['telepon'])->exists()) {
+            return back()->with('gagal', 'Nomor HP itu sudah dipakai pengguna lain.');
+        }
 
         User::create($data);
 
@@ -41,12 +48,18 @@ class KelolaPenggunaController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:80'],
-            'email' => ['required', 'email', 'max:120', Rule::unique('users', 'email')->ignore($pengguna->id)],
+            'telepon' => ['required', 'string', 'max:20'],
+            'email' => ['nullable', 'email', 'max:120', Rule::unique('users', 'email')->ignore($pengguna->id)],
             'role' => ['required', Rule::in(Peran::semua())],
             'rt_rw' => ['nullable', 'string', 'max:40'],
-            'telepon' => ['nullable', 'string', 'max:20'],
             'password' => ['nullable', Password::defaults()],
-        ]);
+        ], [], ['telepon' => 'nomor HP']);
+
+        $data['telepon'] = Telepon::normalisasi($data['telepon']);
+
+        if (User::where('telepon', $data['telepon'])->whereKeyNot($pengguna->id)->exists()) {
+            return back()->with('gagal', 'Nomor HP itu sudah dipakai pengguna lain.');
+        }
 
         if (blank($data['password'])) {
             unset($data['password']);
