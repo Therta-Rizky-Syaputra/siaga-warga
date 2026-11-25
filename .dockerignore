@@ -1,0 +1,11 @@
+.git
+.github
+siaga_warga_app
+docs
+tests
+node_modules
+vendor
+.env
+.env.*
+storage/*.key
+storage/logs/*

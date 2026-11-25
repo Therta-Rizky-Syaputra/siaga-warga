@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // tamu diarahkan ke halaman masuk milik aplikasi ini
         $middleware->redirectGuestsTo(fn () => route('masuk'));
     })
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: '*');
+    })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
