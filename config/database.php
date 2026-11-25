@@ -60,8 +60,16 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+    (PHP_VERSION_ID >= 80500 ? \Pdo\Mysql::ATTR_SSL_CA : \PDO::MYSQL_ATTR_SSL_CA) => env('APP_ENV') === 'production'
+        ? (current(array_filter([
+            env('MYSQL_ATTR_SSL_CA'),
+            '/etc/pki/tls/certs/ca-bundle.crt',
+            '/etc/pki/tls/cert.pem',
+            '/etc/ssl/certs/ca-certificates.crt',
+            function_exists('openssl_get_cert_locations') ? (openssl_get_cert_locations()['default_cert_file'] ?? null) : null,
+        ], fn ($path) => is_string($path) && file_exists($path))) ?: null)
+        : env('MYSQL_ATTR_SSL_CA'),
+]) : [],
         ],
 
         'mariadb' => [
