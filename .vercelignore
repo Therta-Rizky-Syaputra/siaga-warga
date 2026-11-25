@@ -1,0 +1,7 @@
+siaga_warga_app
+docs
+tests
+deploy
+Dockerfile
+.dockerignore
+storage/logs/*
